@@ -39,8 +39,7 @@ export default function ViewDetailSidebar({
     };
 
     const toggleFavorite = async () => {
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
+        if (!localStorage.getItem("accessToken")) {
             toast.error("Vui lòng đăng nhập để lưu đề tài");
             return;
         }

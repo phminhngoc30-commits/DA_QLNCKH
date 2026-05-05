@@ -19,7 +19,6 @@ export default function FavoriteDocs() {
     useEffect(() => {
         const fetchDocs = async () => {
             try {
-                const token = localStorage.getItem("accessToken");
                 const response = await api.get("/favourite/list");
 
                 if (response.data && response.data.data) {
@@ -41,12 +40,6 @@ export default function FavoriteDocs() {
     const toggleFavorite = async (id: string, e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-
-        const token = localStorage.getItem("accessToken");
-        if (!token) {
-            toast.error("Vui lòng đăng nhập để thực hiện chức năng này");
-            return;
-        }
 
         const isFav = favorites[id] || false;
 
