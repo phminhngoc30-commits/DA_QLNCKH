@@ -117,3 +117,31 @@ export const getUserProfile = async (req, res) => {
     return res.status(500).json({ message: "Lỗi hệ thống: " + error.message });
   }
 };
+
+export const searchUserByMSV = async (req, res) => {
+  try {
+    const { msv } = req.params;
+
+    const result = await pool
+      .request()
+      .input("msv", msv)
+      .query(`
+        SELECT s.MASV, s.HOTEN, s.MALOP, k.TENKHOA 
+        FROM SINHVIEN s
+        LEFT JOIN LOP l ON s.MALOP = l.MALOP
+        LEFT JOIN KHOA k ON l.MAKHOA = k.MAKHOA
+        WHERE s.MASV = @msv
+      `);
+
+    if (result.recordset.length === 0) {
+      return res.status(404).json({ message: "Không tìm thấy sinh viên" });
+    }
+
+    return res.status(200).json({
+      student: result.recordset[0]
+    });
+  } catch (error) {
+    console.error("Lỗi khi tìm kiếm sinh viên:", error);
+    return res.status(500).json({ message: "Lỗi hệ thống" });
+  }
+};

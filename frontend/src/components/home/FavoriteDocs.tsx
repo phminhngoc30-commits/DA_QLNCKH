@@ -43,7 +43,7 @@ export default function FavoriteDocs() {
 
         const isFav = favorites[id] || false;
 
-        // Optimistic UI update
+        // Optimistic UI update for heart icon
         setFavorites(prev => ({ ...prev, [id]: !isFav }));
 
         try {
@@ -52,6 +52,8 @@ export default function FavoriteDocs() {
                 toast.success("Đã thêm vào tủ tài liệu yêu thích");
             } else {
                 await api.delete(`/favourite/${id}`);
+                // Immediately remove from the visible list on Home page
+                setDocs(prev => prev.filter(doc => doc.MACONGTRINH !== id));
                 toast.success("Đã bỏ khỏi danh sách yêu thích");
             }
         } catch (err: any) {

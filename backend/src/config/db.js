@@ -7,13 +7,13 @@ const SQL_UID = "sa";
 const SQL_PWD = "cavoihoangde";
 
 const config = {
-  driver: SQL_SERVER,
   server: SQL_SERVER,
   database: SQL_DATABASE,
   user: SQL_UID,
   password: SQL_PWD,
   options: {
     encrypt: false,
+    trustServerCertificate: true,
     enableArithAbort: false,
   },
   connectionTimeout: 30000,

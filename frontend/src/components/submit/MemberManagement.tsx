@@ -1,5 +1,7 @@
 import React from 'react';
 import { UserPlus, X } from 'lucide-react';
+import api from '../../services/api';
+import { toast } from 'sonner';
 
 export interface ProjectMember {
     id: string;
@@ -97,36 +99,36 @@ const MemberManagement: React.FC<MemberManagementProps> = ({ members, onAddMembe
                                             type="text"
                                             value={member.studentId}
                                             onChange={(e) => onUpdateMember(member.id, 'studentId', e.target.value.replace(/\D/g, ''))}
+                                            onBlur={async (e) => {
+                                                const msv = e.target.value;
+                                                if (msv.length >= 8) {
+                                                    try {
+                                                        const res = await api.get(`/users/search/${msv}`);
+                                                        if (res.data && res.data.student) {
+                                                            const { HOTEN, MALOP, TENKHOA } = res.data.student;
+                                                            onUpdateMember(member.id, 'name', HOTEN);
+                                                            onUpdateMember(member.id, 'class', MALOP);
+                                                            onUpdateMember(member.id, 'department', TENKHOA);
+                                                            toast.success(`Đã tìm thấy sinh viên: ${HOTEN}`);
+                                                        }
+                                                    } catch (err) {
+                                                        console.error("Search student failed", err);
+                                                    }
+                                                }
+                                            }}
                                             placeholder="MSV..."
                                             maxLength={8}
                                             className="w-full bg-transparent border-none focus:ring-0 text-sm text-on-surface-variant"
                                         />
                                     </td>
                                     <td className="px-4 py-2 min-w-[180px]">
-                                        <select 
+                                        <input 
+                                            type="text"
                                             value={member.class}
-                                            onChange={(e) => handleClassChange(member.id, e.target.value)}
-                                            className="w-full bg-transparent border-none focus:ring-0 text-sm text-on-surface-variant appearance-none cursor-pointer"
-                                        >
-                                            <option value="">Chọn lớp...</option>
-                                            <option value="Khoa học dữ liệu">Khoa học dữ liệu</option>
-                                            <option value="Trí tuệ nhân tạo">Trí tuệ nhân tạo</option>
-                                            <option value="Công nghệ thông tin">Công nghệ thông tin</option>
-                                            <option value="Kỹ thuật phần mềm">Kỹ thuật phần mềm</option>
-                                            <option value="An toàn thông tin">An toàn thông tin</option>
-                                            <option value="Hệ thống thông tin">Hệ thống thông tin</option>
-                                            <option value="Hệ thống thông tin quản lý">Hệ thống thông tin quản lý</option>
-                                            <option value="Khoa học máy tính">Khoa học máy tính</option>
-                                            <option value="Khoa học tính toán">Khoa học tính toán</option>
-                                            <option value="Định phí bảo hiểm">Định phí bảo hiểm</option>
-                                            <option value="Công nghệ Logistics">Công nghệ Logistics</option>
-                                            <option value="Thống kê kinh tế">Thống kê kinh tế</option>
-                                            <option value="Phân tích dữ liệu kinh tế">Phân tích dữ liệu kinh tế</option>
-                                            <option value="Thống kê và Trí tuệ kinh doanh">Thống kê và Trí tuệ kinh doanh</option>
-                                            <option value="Toán kinh tế">Toán kinh tế</option>
-                                            <option value="Toán ứng dụng">Toán ứng dụng</option>
-                                            <option value="Kinh tế số">Kinh tế số</option>
-                                        </select>
+                                            onChange={(e) => onUpdateMember(member.id, 'class', e.target.value)}
+                                            placeholder="Lớp..."
+                                            className="w-full bg-transparent border-none focus:ring-0 text-sm text-on-surface-variant font-medium"
+                                        />
                                     </td>
                                     <td className="px-4 py-2 min-w-[220px]">
                                         <select 
