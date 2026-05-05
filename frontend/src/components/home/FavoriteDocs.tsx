@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ChevronRight, Heart } from "lucide-react";
-import axios from "axios";
+import api from "../../services/api";
 import { toast } from "sonner";
 
 export default function FavoriteDocs() {
@@ -20,9 +20,7 @@ export default function FavoriteDocs() {
         const fetchDocs = async () => {
             try {
                 const token = localStorage.getItem("accessToken");
-                const response = await axios.get("http://localhost:5001/api/favourite/list", {
-                    headers: { "Authorization": token ? `Bearer ${token}` : "" }
-                });
+                const response = await api.get("/favourite/list");
 
                 if (response.data && response.data.data) {
                     setDocs(response.data.data.slice(0, 3));
@@ -57,14 +55,10 @@ export default function FavoriteDocs() {
 
         try {
             if (!isFav) {
-                await axios.post(`http://localhost:5001/api/favourite/${id}`, {}, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
+                await api.post(`/favourite/${id}`, {});
                 toast.success("Đã thêm vào tủ tài liệu yêu thích");
             } else {
-                await axios.delete(`http://localhost:5001/api/favourite/${id}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
+                await api.delete(`/favourite/${id}`);
                 toast.success("Đã bỏ khỏi danh sách yêu thích");
             }
         } catch (err: any) {

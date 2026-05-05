@@ -43,8 +43,20 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log("server bắt đầu trên cổng 5001");
-  });
-});
+// Database connection wrapper for serverless
+const startServer = async () => {
+  try {
+    await connectDB();
+    if (process.env.NODE_ENV !== "production" || !process.env.VERCEL) {
+      app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+      });
+    }
+  } catch (err) {
+    console.error("Database connection failed", err);
+  }
+};
+
+startServer();
+
+export default app;

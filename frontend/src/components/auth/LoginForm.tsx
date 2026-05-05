@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import { User, Lock, ArrowRight } from "lucide-react";
 import { useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext";
 
@@ -29,7 +29,7 @@ export default function LoginForm({ showNews = true }: LoginFormProps) {
 
         setLoading(true);
         try {
-            const response = await axios.post("http://localhost:5001/api/auth/signin", {
+            const response = await api.post("/auth/signin", {
                 msv,
                 password
             });

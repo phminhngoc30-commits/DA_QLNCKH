@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
+import api from "../../services/api";
 import { toast } from "sonner";
 import { ArrowLeft, Heart, Building2, Calendar, Highlighter, StickyNote, ZoomIn, ZoomOut, FileText } from "lucide-react";
 
@@ -47,14 +47,10 @@ export default function ViewDetailSidebar({
         setIsFav(!isFav);
         try {
             if (!isFav) {
-                await axios.post(`http://localhost:5001/api/favourite/${project?.MACONGTRINH}`, {}, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
+                await api.post(`/favourite/${project?.MACONGTRINH}`, {});
                 toast.success("Đã lưu vào yêu thích");
             } else {
-                await axios.delete(`http://localhost:5001/api/favourite/${project?.MACONGTRINH}`, {
-                    headers: { "Authorization": `Bearer ${token}` }
-                });
+                await api.delete(`/favourite/${project?.MACONGTRINH}`);
                 toast.success("Đã bỏ khỏi danh sách yêu thích");
             }
         } catch (error: any) {

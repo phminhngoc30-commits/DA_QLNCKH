@@ -161,7 +161,7 @@ const SubmittedProjectView: React.FC<SubmittedProjectViewProps> = ({ project }) 
                                     </div>
                                 </div>
                                 <button
-                                    onClick={() => window.open(`http://localhost:5001/uploads/${project.fileName}`, '_blank')}
+                                    onClick={() => window.open(`/api/search/read/${project.MACONGTRINH}`, '_blank')}
                                     className="text-primary hover:underline text-[10px] font-extrabold uppercase tracking-[0.2em] px-4 py-2 bg-white rounded-lg shadow-sm"
                                 >
                                     Xem

@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import axios from "axios";
+import api from "../services/api";
 import MainLayout from "../components/layout/MainLayout";
 import SearchSidebar from "../components/search/SearchSidebar";
 import SearchResultList from "../components/search/SearchResultList";
@@ -25,9 +25,7 @@ export default function SearchPage() {
   const fetchSearchData = async (page = 1, isRandom = false) => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("accessToken");
-
-      const response = await axios.get("http://localhost:5001/api/search/search", {
+      const response = await api.get("/search/search", {
         params: {
           keyword: isRandom ? null : filters.keyword,
           author: isRandom ? null : filters.author,
@@ -37,9 +35,6 @@ export default function SearchPage() {
           page,
           limit: isRandom ? 5 : 12, // Show 5 for random top search
           isRandom: isRandom ? true : null
-        },
-        headers: {
-          "Authorization": token ? `Bearer ${token}` : ""
         }
       });
 

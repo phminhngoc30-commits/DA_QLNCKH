@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import axios from "axios";
+import api from "../services/api";
 import MainLayout from "../components/layout/MainLayout";
 import SearchResultList from "../components/search/SearchResultList";
 import { Heart, Home } from "lucide-react";
@@ -13,12 +13,7 @@ export default function FavoritePage() {
   const fetchFavorites = async () => {
     setLoading(true);
     try {
-      const token = localStorage.getItem("accessToken");
-      const response = await axios.get("http://localhost:5001/api/favourite/list", {
-        headers: {
-          "Authorization": token ? `Bearer ${token}` : ""
-        }
-      });
+      const response = await api.get("/favourite/list");
 
       if (response.data && response.data.data) {
         setResults(response.data.data);
