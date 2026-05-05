@@ -9,14 +9,19 @@ import favouriteRoutes from "./routes/favouriteRoutes.js";
 import submissionRoutes from "./routes/submissionRoutes.js";
 import cookieParser from "cookie-parser";
 import { protectedRoute } from "./middlewares/authMiddleware.js";
+import path from "path";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 5001;
+const __dirname = path.resolve();
 
 //middlewares
-app.use(cors({ origin: true, credentials: true }));
+
+if (process.env.NODE_ENV !== "production") {
+  app.use(cors({ origin: ["http://localhost:5173"] }));
+}
 app.use(express.json());
 app.use(cookieParser());
 app.use("/uploads", express.static("uploads"));
@@ -29,6 +34,14 @@ app.use("/api/users", userRoutes);
 app.use("/api/search", searchRoutes);
 app.use("/api/favourite", favouriteRoutes);
 app.use("/api/submission", submissionRoutes);
+
+if (process.env.NODE_ENV === "production") {
+  app.use(express.static(path.join(__dirname, "..frontend/dist")));
+
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "..frontend/dist", "index.html"));
+  });
+}
 
 connectDB().then(() => {
   app.listen(PORT, () => {
