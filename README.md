@@ -46,10 +46,29 @@ npm run dev
 *   **Backend**: Chạy tại `http://localhost:5001`
 *   **Frontend**: Chạy tại `http://localhost:5173` (Tự động mở trình duyệt)
 
-## 📁 Cấu trúc thư mục
-*   `/frontend`: Mã nguồn React + Vite + TailwindCSS.
-*   `/backend`: API Node.js + Express + MSSQL.
-*   `/vercel.json`: Cấu hình hỗ trợ deploy (nếu dùng Cloud).
+## 📁 Cấu trúc thư mục (src)
+
+Dự án được phân chia thành hai phần chính, mỗi phần có cấu trúc `src` chuyên biệt:
+
+### 🔹 Frontend (`frontend/src`)
+Cấu trúc React được tổ chức theo module:
+*   `assets/`: Chứa hình ảnh, icons, font và các file tĩnh.
+*   `components/`: Các thành phần giao diện dùng chung (Common UI, Layout, Form components).
+    *   `auth/`: Xử lý Đăng nhập, Đăng ký, Quên mật khẩu.
+    *   `layout/`: Chứa Header, Sidebar, Footer, MainLayout.
+    *   `submit/`: Các component phục vụ nộp hồ sơ (MemberTable, FileAttachment).
+*   `context/`: Quản lý trạng thái toàn cục (ví dụ: `AuthContext` cho thông tin đăng nhập).
+*   `pages/`: Chứa các trang chính của ứng dụng (Home, Search, Profile, Submit, ViewDetail).
+*   `services/`: Chứa cấu hình Axios (`api.ts`) và các hàm gọi API theo từng module.
+
+### 🔸 Backend (`backend/src`)
+Cấu trúc Node.js theo mô hình Controller-Route-Service:
+*   `config/`: Cấu hình kết nối cơ sở dữ liệu SQL Server.
+*   `controllers/`: Xử lý logic nghiệp vụ chính (Logic đăng nhập, tìm kiếm, lưu hồ sơ).
+*   `middlewares/`: Các bộ lọc trung gian (ví dụ: Kiểm tra Token hợp lệ trước khi vào Route).
+*   `models/`: (Nếu có) Định nghĩa cấu trúc dữ liệu hoặc các truy vấn SQL thô.
+*   `routes/`: Định nghĩa các đường dẫn API (Endpoints) cho ứng dụng.
+*   `server.js`: File chạy chính, khởi tạo Server và kết nối DB.
 
 ## 💡 Lưu ý
 *   Nếu gặp lỗi cổng 5001 đã bị chiếm dụng, hãy đổi `PORT` trong file `.env` của backend.
