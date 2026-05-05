@@ -16,7 +16,7 @@ interface ViewDetailSidebarProps {
 
 export default function ViewDetailSidebar({ 
     project, 
-    zoom, 
+    zoom: _zoom, 
     setZoom, 
     isHighlighted, 
     setIsHighlighted,

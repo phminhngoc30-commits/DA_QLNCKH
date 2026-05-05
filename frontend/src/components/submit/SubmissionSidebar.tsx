@@ -1,5 +1,5 @@
 import React from 'react';
-import { Send, Info, Save } from 'lucide-react';
+import { Send, Info } from 'lucide-react';
 
 interface SubmissionSidebarProps {
     committed: boolean;

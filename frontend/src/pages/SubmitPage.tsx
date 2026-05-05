@@ -228,7 +228,7 @@ const SubmitPage = () => {
                     {/* Right Column: Sidebar & Actions */}
                     <div className="lg:w-80 shrink-0 space-y-8">
                         <FileAttachment
-                            files={files}
+                            files={files.map(f => ({ name: f.name, size: f.size }))}
                             onUpload={handleFileUpload}
                             onDelete={handleDeleteFile}
                         />

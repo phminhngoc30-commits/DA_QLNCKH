@@ -8,7 +8,7 @@ import { useAuth } from '../context/AuthContext';
 
 const ProfilePage = () => {
     const { user: authUser, refreshProfile } = useAuth();
-    const [loading, setLoading] = useState(false);
+    const [loading] = useState(false);
     const [updating, setUpdating] = useState(false);
     const [profile, setProfile] = useState<any>({
         HOTEN: '',

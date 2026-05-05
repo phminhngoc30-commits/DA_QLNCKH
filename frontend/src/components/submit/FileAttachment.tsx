@@ -2,9 +2,9 @@ import React from 'react';
 import { CloudUpload, FileText, Trash2 } from 'lucide-react';
 
 interface AttachedFile {
-    id: string;
+    id?: string;
     name: string;
-    size?: string;
+    size?: number;
 }
 
 interface FileAttachmentProps {
@@ -48,7 +48,7 @@ const FileAttachment: React.FC<FileAttachmentProps> = ({ files, onUpload, onDele
                             <div className="flex items-center gap-3 overflow-hidden">
                                 <FileText className="w-4 h-4 text-primary shrink-0" />
                                 <span className="truncate font-medium">{file.name}</span>
-                                <span className="text-[10px] text-slate-400">({(file.size / 1024 / 1024).toFixed(2)} MB)</span>
+                                <span className="text-[10px] text-slate-400">({file.size ? (file.size / 1024 / 1024).toFixed(2) : '0.00'} MB)</span>
                             </div>
                             <button 
                                 onClick={() => onDelete(file.name)}

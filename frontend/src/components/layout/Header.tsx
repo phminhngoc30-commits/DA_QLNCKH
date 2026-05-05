@@ -8,6 +8,7 @@ import LoginPromptModal from "../common/LoginPromptModal";
 
 interface HeaderProps {
     simple?: boolean;
+    isLoggedIn?: boolean;
 }
 
 export default function Header({ simple = false }: HeaderProps) {
@@ -21,7 +22,7 @@ export default function Header({ simple = false }: HeaderProps) {
     const [notifications] = useState<any[]>([]); // Mock notifications
     const [modalConfig, setModalConfig] = useState({ title: "Yêu cầu đăng nhập", message: "" });
 
-    const handleProtectedNavigation = (e: React.MouseEvent, path: string, message: string) => {
+    const handleProtectedNavigation = (e: React.MouseEvent, _path: string, message: string) => {
         if (!isLoggedIn) {
             e.preventDefault();
             setModalConfig({

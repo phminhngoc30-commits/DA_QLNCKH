@@ -1,5 +1,5 @@
 import React from 'react';
-import { CheckCircle2, LayoutGrid, Calendar, Landmark, Quote, FileText, File as FileIcon, Paperclip, Verified, UserCheck } from 'lucide-react';
+import { CheckCircle2, LayoutGrid, Calendar, Landmark, Quote, FileText, Paperclip, Verified, UserCheck } from 'lucide-react';
 
 interface SubmittedProjectViewProps {
     project: any;

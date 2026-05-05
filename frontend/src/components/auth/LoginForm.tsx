@@ -1,6 +1,6 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { User, Lock, ArrowRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import axios from "axios";
 import { toast } from "sonner";
 import { useAuth } from "../../context/AuthContext";
@@ -13,8 +13,7 @@ export default function LoginForm({ showNews = true }: LoginFormProps) {
     const [msv, setMsv] = useState("");
     const [password, setPassword] = useState("");
     const [loading, setLoading] = useState(false);
-    const navigate = useNavigate();
-    const { login, user } = useAuth();
+    const { login } = useAuth();
 
     // Remove the useEffect navigation that was causing issues
     
