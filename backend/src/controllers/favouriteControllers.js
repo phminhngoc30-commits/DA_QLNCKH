@@ -100,3 +100,78 @@ export const getFavouriteList = async (req, res) => {
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
+
+export const toggleFavourite = async (req, res) => {
+  try {
+    const { maSV, macongtrinh } = req.body;
+    const { userId } = req.user; // We use userId from token for security, but allow maSV for compatibility if needed
+
+    if (!macongtrinh) {
+      return res.status(400).json({ 
+        responseCode: "400", 
+        responseMsg: "Thiếu mã công trình", 
+        data: null 
+      });
+    }
+
+    // Check if project exists
+    const checkProject = await pool
+      .request()
+      .input("id", macongtrinh)
+      .query("SELECT MACONGTRINH FROM CONGTRINHNC WHERE MACONGTRINH = @id");
+
+    if (!checkProject.recordset.length) {
+      return res.status(404).json({ 
+        responseCode: "404", 
+        responseMsg: "Công trình nghiên cứu không tồn tại", 
+        data: null 
+      });
+    }
+
+    // Check if already favourite
+    const checkFavourite = await pool
+      .request()
+      .input("userId", userId)
+      .input("id", macongtrinh)
+      .query(
+        "SELECT COUNT(*) AS total FROM YEUTHICH WHERE UserID = @userId AND MACONGTRINH = @id",
+      );
+
+    const isFavourite = checkFavourite.recordset[0].total > 0;
+
+    if (isFavourite) {
+      // REMOVE
+      await pool
+        .request()
+        .input("userId", userId)
+        .input("id", macongtrinh)
+        .query("DELETE FROM YEUTHICH WHERE UserID = @userId AND MACONGTRINH = @id");
+
+      return res.status(200).json({
+        responseCode: "200",
+        responseMsg: "Removed from favourite",
+        data: { isFavourite: false }
+      });
+    } else {
+      // ADD
+      await pool
+        .request()
+        .input("userId", userId)
+        .input("id", macongtrinh)
+        .query("INSERT INTO YEUTHICH (UserID, MACONGTRINH) VALUES (@userId, @macongtrinh)");
+
+      return res.status(200).json({
+        responseCode: "200",
+        responseMsg: "Added to favourite",
+        data: { isFavourite: true }
+      });
+    }
+  } catch (error) {
+    console.error("Lỗi khi toggle yêu thích", error);
+    return res.status(500).json({ 
+      responseCode: "500", 
+      responseMsg: "Lỗi hệ thống", 
+      data: null 
+    });
+  }
+};
